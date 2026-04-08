@@ -43,7 +43,7 @@ func now() time.Time {
 // Schedule creates a new timelocked action. The caller becomes its
 // creator. The action cannot be executed until `delay` seconds have
 // passed. Returns the action ID.
-func Schedule(cross realm, target, data string, delay int64) string {
+func Schedule(_ realm, target, data string, delay int64) string {
 	if target == "" {
 		panic("target must not be empty")
 	}
@@ -75,7 +75,7 @@ func Schedule(cross realm, target, data string, delay int64) string {
 // timelock is the protection, not the executor's identity. The action
 // must exist, not be cancelled, not already executed, and the delay
 // must have elapsed.
-func Execute(cross realm, actionID string) string {
+func Execute(_ realm, actionID string) string {
 	a := mustGet(actionID)
 	if a.Cancelled {
 		panic("action is cancelled")
@@ -94,7 +94,7 @@ func Execute(cross realm, actionID string) string {
 
 // Cancel removes a pending action. Only the original creator can cancel.
 // Cannot cancel already-executed actions.
-func Cancel(cross realm, actionID string) string {
+func Cancel(_ realm, actionID string) string {
 	a := mustGet(actionID)
 	if caller() != a.Creator {
 		panic("only the creator can cancel")
